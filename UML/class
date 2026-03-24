@@ -1,0 +1,113 @@
+@startuml
+
+' =======================
+' User
+' =======================
+class User {
+  - id : int
+  - name : string
+  - email : string
+  - password : string
+  - role : string
+  + viewProfile()
+}
+
+' =======================
+' Category
+' =======================
+class Category {
+  - id : int
+  - name : string
+  - description : string
+}
+
+' =======================
+' Product
+' =======================
+class Product {
+  - id : int
+  - name : string
+  - description : text
+  - price : float
+  - stock : int
+  - category_id : int
+}
+
+' =======================
+' Cart
+' =======================
+class Cart {
+  - id : int
+  - user_id : int
+}
+
+' =======================
+' CartItem
+' =======================
+class CartItem {
+  - id : int
+  - cart_id : int
+  - product_id : int
+  - quantity : int
+}
+
+' =======================
+' Order
+' =======================
+class Order {
+  - id : int
+  - user_id : int
+  - total_price : float
+  - status : string
+  - created_at : datetime
+}
+
+' =======================
+' OrderItem
+' =======================
+class OrderItem {
+  - id : int
+  - order_id : int
+  - product_id : int
+  - quantity : int
+  - price : float
+}
+
+' =======================
+' Event
+' =======================
+class OrderPlaced {
+  - order : Order
+}
+
+' =======================
+' Jobs (Queue)
+' =======================
+class SendOrderConfirmationEmail {
+  + handle()
+}
+
+class UpdateProductStock {
+  + handle()
+}
+
+' =======================
+' Relationships
+' =======================
+
+User "1" -- "1" Cart
+User "1" -- "*" Order
+
+Category "1" -- "*" Product
+
+Cart "1" -- "*" CartItem
+Product "1" -- "*" CartItem
+
+Order "1" -- "*" OrderItem
+Product "1" -- "*" OrderItem
+
+OrderPlaced ..> Order
+OrderPlaced ..> SendOrderConfirmationEmail
+OrderPlaced ..> UpdateProductStock
+
+@enduml
