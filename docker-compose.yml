@@ -1,17 +1,17 @@
-
-
 services:
-
   app:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
     container_name: laravel_app
+    # This matches the container user to your host user (usually 1000:1000)
+    user: "1000:1000"
     volumes:
       - ./backend:/var/www
     working_dir: /var/www
     depends_on:
       - db
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: laravel_pgadmin
@@ -26,7 +26,6 @@ services:
   nginx:
     image: nginx:alpine
     container_name: laravel_nginx
-    
     ports:
       - "8000:80"
     volumes:
