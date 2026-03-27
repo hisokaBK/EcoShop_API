@@ -3,6 +3,9 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use App\Http\Middleware\AdminMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,8 +15,20 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
-    })
-    ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $middleware->alias([
+              'admin' => AdminMiddleware::class,
+        ]);
+    })->withExceptions(function (Exceptions $exceptions) {
+
+        $exceptions->render(function (ThrottleRequestsException $e, Request $request) {
+
+            return response()->json([
+                'success' => false,
+                'status'  => 429,
+                'message' => '9awiiiiti . Sber chwiya tidouz wa9t',
+                'retry_after' => $e->getHeaders()['Retry-After'] . ' seconds'
+            ], 429);
+
+        });
+
     })->create();
