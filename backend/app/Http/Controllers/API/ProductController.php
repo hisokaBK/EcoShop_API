@@ -13,14 +13,6 @@ class ProductController extends Controller
     {
         $query = Product::with('category');
 
-        if ($request->has('category_id')) {
-            $query->where('category_id', $request->category_id);
-        }
-
-        if ($request->has('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
-        }
-
         $products = $query->paginate(10);
 
         return response()->json($products);
