@@ -6,6 +6,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\CartController;
+use App\Http\Controllers\API\OrderController;
 
 use Illuminate\Support\Facades\Cache;
 
@@ -57,4 +58,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/cart/update/{id}', [CartController::class, 'update']);
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove']);
     Route::delete('/cart/clear', [CartController::class, 'clear']);
+});
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::post('/orders', [OrderController::class, 'store']);
 });

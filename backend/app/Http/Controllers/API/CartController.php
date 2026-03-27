@@ -113,10 +113,15 @@ class CartController extends Controller
 
         if ($cart) {
             CartItem::where('cart_id', $cart->id)->delete();
+
+            return response()->json([
+              'message' => 'Cart cleared'
+            ]);
         }
 
         return response()->json([
-            'message' => 'Cart cleared'
+            'message' => 'cannot cleared Cart Not exists'
         ]);
+
     }
 }
