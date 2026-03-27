@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\CartController;
+
 use Illuminate\Support\Facades\Cache;
 
 
@@ -48,3 +50,11 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 });
 
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart/add', [CartController::class, 'add']);
+    Route::put('/cart/update/{id}', [CartController::class, 'update']);
+    Route::delete('/cart/remove/{id}', [CartController::class, 'remove']);
+    Route::delete('/cart/clear', [CartController::class, 'clear']);
+});
