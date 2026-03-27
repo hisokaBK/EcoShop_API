@@ -31,7 +31,7 @@ Route::middleware('throttle:api')
 Route::get('/categories', [CategoryController::class, 'index'])
 ->middleware('throttle:api');
 
-Route::middleware(['auth:sanctum','throttle:api'])->group(function () {
+Route::middleware(['auth:sanctum','throttle:api','admin'])->group(function () {
     Route::post('/categories', [CategoryController::class, 'store']);
     Route::put('/categories/{id}', [CategoryController::class, 'update']);
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
